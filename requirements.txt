@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pandas
+numpy
+pydantic
+pydantic-settings
+akshare
+tushare
+httpx
+python-logging-loki
+docker
+python-multipart
+pyyaml

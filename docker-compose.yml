@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: quant_monitor_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - TUSHARE_TOKEN=${TUSHARE_TOKEN}
+      - LOG_LEVEL=INFO
+    restart: always
+
+  # Future proofing: Adding a placeholder for a worker if distributed processing is needed
+  # worker:
+  #   build: .
+  #   command: celery -A app.worker worker --loglevel=info
+  #   depends_on:
+  #     - redis
+  
+  # redis:
+  #   image: redis:alpine
