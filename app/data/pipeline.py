@@ -48,11 +48,14 @@ class DataPipeline:
         """
         logger.info(f"Fetching data for {symbol} from {start_date} to {end_date} (Adjust: {adjust})")
         
+        # Clean symbol: AkShare expects '000001' not 'sz000001'
+        clean_symbol = ''.join(filter(str.isdigit, symbol))
+        
         try:
             # Using asyncio.to_thread to run synchronous akshare calls without blocking the event loop
             df = await asyncio.to_thread(
                 ak.stock_zh_a_hist, 
-                symbol=symbol, 
+                symbol=clean_symbol, 
                 period="daily", 
                 start_date=start_date, 
                 end_date=end_date, 
