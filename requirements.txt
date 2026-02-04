@@ -11,3 +11,4 @@ python-logging-loki
 docker
 python-multipart
 pyyaml
+tenacity
