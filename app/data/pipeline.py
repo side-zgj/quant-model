@@ -66,11 +66,31 @@ class DataPipeline:
                 logger.warning(f"No data returned for {symbol}")
                 return pd.DataFrame()
 
-            # Basic cleaning and column mapping
-            df.columns = [
-                'date', 'open', 'close', 'high', 'low', 'volume', 
-                'amount', 'amplitude', 'pct_chg', 'change', 'turnover'
-            ]
+            # Robust column mapping using rename instead of direct assignment
+            rename_map = {
+                '日期': 'date',
+                '开盘': 'open',
+                '收盘': 'close',
+                '最高': 'high',
+                '最低': 'low',
+                '成交量': 'volume',
+                '成交额': 'amount',
+                '振幅': 'amplitude',
+                '涨跌幅': 'pct_chg',
+                '涨跌额': 'change',
+                '换手率': 'turnover'
+            }
+            df = df.rename(columns=rename_map)
+            
+            # Ensure 'date' column exists
+            if 'date' not in df.columns:
+                # Fallback: if rename failed, try to use the first column as date
+                logger.warning(f"Column 'date' not found, columns are: {df.columns.tolist()}")
+                if '日期' in df.columns: # Should have been renamed
+                    pass 
+                else:
+                    df.rename(columns={df.columns[0]: 'date'}, inplace=True)
+
             df['date'] = pd.to_datetime(df['date'])
             df.set_index('date', inplace=True)
             
